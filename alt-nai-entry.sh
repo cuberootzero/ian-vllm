@@ -64,16 +64,16 @@ fi
 CLEAN_ROOT="${MODEL_ROOT%/}"
 
 # --- 5. Modify Model Path (Find Snapshot) ---
-if [ ! -d "$CLEAN_ROOT/snapshots" ]; then
-    echo "Error: Directory '$CLEAN_ROOT/snapshots' does not exist."
-    exit 1
-fi
+if [ -d "$CLEAN_ROOT/snapshots" ]; then
+    echo "Info: Directory '$CLEAN_ROOT/snapshots' exist."
 
-MODIFIED_MODEL_PATH=$(ls -d "$CLEAN_ROOT/snapshots/"* 2>/dev/null | head -n 1)
-
-if [ -z "$MODIFIED_MODEL_PATH" ]; then
-    echo "Error: No snapshot found in $CLEAN_ROOT/snapshots/"
-    exit 1
+    MODIFIED_MODEL_PATH=$(ls -d "$CLEAN_ROOT/snapshots/"* 2>/dev/null | head -n 1)
+    if [ -z "$MODIFIED_MODEL_PATH" ]; then
+        echo "Error: No snapshot found in $CLEAN_ROOT/snapshots/"
+        exit 1
+    fi
+else
+    MODIFIED_MODEL_PATH="$CLEAN_ROOT"
 fi
 
 # --- 6. Process Override File ---
